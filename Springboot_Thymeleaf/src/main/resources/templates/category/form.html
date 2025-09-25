@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::title}, ~{::content})}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${category.id != null} ? '✏️ Sửa Category' : '➕ Thêm Category'">Form Category</title>
+        <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="file"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .actions {
+            text-align: center;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        .btn-save {
+            background: #4CAF50;
+            color: white;
+        }
+        .btn-save:hover {
+            background: #45a049;
+        }
+        .btn-cancel {
+            background: #f44336;
+            color: white;
+            text-decoration: none;
+        }
+        .btn-cancel:hover {
+            background: #da190b;
+        }
+        img.preview {
+            margin-top: 10px;
+            max-width: 120px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+<div th:fragment="content" class="container mt-4">
+    <h2 class="text-center mb-4" th:text="${category.id != null} ? '✏️ Sửa Category' : '➕ Thêm Category'"></h2>
+
+    <form th:action="@{/categories/save}" th:object="${category}" method="post" enctype="multipart/form-data" class="p-4 shadow rounded bg-white">
+        <input type="hidden" th:field="*{id}"/>
+
+        <!-- Tên Category -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Tên Category</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Nhập tên..." required/>
+        </div>
+
+        <!-- Ảnh -->
+        <div class="mb-3">
+            <label for="fileImage" class="form-label">Ảnh</label>
+            <input type="file" id="fileImage" name="fileImage" class="form-control"/>
+            <div th:if="${category.images != null}" class="mt-2">
+                <img class="img-thumbnail" th:src="@{${category.images}}" alt="Preview" style="max-width:150px"/>
+            </div>
+        </div>
+
+        <!-- Trạng thái -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Trạng thái</label>
+            <select id="status" th:field="*{status}" class="form-select">
+                <option th:value="true" th:selected="${category.status == true}">Active</option>
+                <option th:value="false" th:selected="${category.status == false}">Inactive</option>
+            </select>
+        </div>
+
+        <!-- Nút -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success me-2">💾 Lưu</button>
+            <a th:href="@{/categories}" class="btn btn-danger">❌ Hủy</a>
+        </div>
+    </form>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

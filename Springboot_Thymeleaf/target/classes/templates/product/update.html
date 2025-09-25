@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Cập nhật Sản phẩm</title>
+</head>
+<body>
+<h2>✏️ Cập nhật Sản phẩm</h2>
+
+<form th:action="@{/products/edit}" th:object="${product}" method="post" enctype="multipart/form-data">
+    <input type="hidden" th:field="*{productId}">
+
+    <label>Tên SP:</label>
+    <input type="text" th:field="*{productName}" required><br>
+
+    <label>Giá:</label>
+    <input type="number" th:field="*{unitPrice}" step="0.01" required><br>
+
+    <label>Số lượng:</label>
+    <input type="number" th:field="*{quantity}" required><br>
+
+    <label>Giảm giá:</label>
+    <input type="number" th:field="*{discount}" step="0.01"><br>
+
+    <label>Mô tả:</label>
+    <textarea th:field="*{description}"></textarea><br>
+
+    <label>Trạng thái:</label>
+    <select th:field="*{status}">
+        <option value="1">Hoạt động</option>
+        <option value="0">Không hoạt động</option>
+    </select><br>
+
+    <label>Danh mục:</label>
+    <select name="categoryId">
+        <option th:each="cat : ${categories}" th:value="${cat.categoryId}"
+                th:text="${cat.categoryName}"
+                th:selected="${cat.categoryId == product.category.categoryId}"></option>
+    </select><br>
+
+    <p>Ảnh hiện tại:</p>
+    <img th:src="@{'/files/' + ${product.images}}" width="80" th:if="${product.images != null}"><br>
+
+    <label>Chọn ảnh mới:</label>
+    <input type="file" name="images"><br><br>
+
+    <button type="submit">💾 Cập nhật</button>
+    <a th:href="@{/products}">⬅ Quay lại</a>
+</form>
+</body>
+</html>
